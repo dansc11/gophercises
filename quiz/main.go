@@ -1,22 +1,39 @@
 package main
 
 import (
+	"bufio"
 	"encoding/csv"
 	"flag"
 	"fmt"
 	"os"
+	"time"
 )
 
 func main() {
 	var config gameConfig
 
 	pathArg := flag.String("p", "problems.csv", "Relative or absolute path to the problems CSV file")
+	timeArg := flag.Int("t", 30, "Time limit in seconds for the quiz")
 
 	flag.Parse()
 
 	config.ProblemsPath = *pathArg
 	config.Reader = os.Stdin
 	config.Writer = os.Stdout
+	config.TimeLimit = *timeArg
+
+	fmt.Print("Press 'Enter' to start...")
+	bufio.NewReader(os.Stdin).ReadBytes('\n')
+
+	fmt.Printf("You have %d seconds... GO!\n", config.TimeLimit)
+
+	timer := time.NewTimer(time.Duration(config.TimeLimit) * time.Second)
+
+	go func() {
+		<-timer.C
+		fmt.Println("Time's up!")
+		os.Exit(0)
+	}()
 
 	if err := play(config); err != nil {
 		panic(err)
@@ -38,7 +55,7 @@ func play(config gameConfig) error {
 		}
 	}
 
-	fmt.Fprintf(config.Writer, "%d/%d problems were answered correctly", len(correctAnswers), len(problems))
+	fmt.Fprintf(config.Writer, "%d/%d problems were answered correctly\n", len(correctAnswers), len(problems))
 
 	return nil
 }

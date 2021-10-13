@@ -6,4 +6,5 @@ type gameConfig struct {
 	ProblemsPath string
 	Reader       io.Reader
 	Writer       io.Writer
+	TimeLimit    int
 }

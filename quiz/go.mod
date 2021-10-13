@@ -1,3 +1,3 @@
 module github.com/dansc11/gophercises/quiz
 
-go 1.16
+go 1.17

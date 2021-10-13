@@ -64,7 +64,7 @@ func TestPlay(t *testing.T) {
 	}
 
 	writerGot := outputBuffer.String()
-	writerWant := "1+1=1/1 problems were answered correctly"
+	writerWant := "1+1=1/1 problems were answered correctly\n"
 	if writerGot != writerWant {
 		t.Fatalf("Wanted %s, got %s", writerGot, writerWant)
 	}
